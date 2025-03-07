@@ -4,7 +4,14 @@ import cors from "cors";
 const app = express();
 const port = 5000;
 
-app.use(cors());
+
+const corsOptions = {
+  origin: "https://wethercastnow.netlify.app", 
+  methods: ["GET", "POST"], 
+  credentials: true, 
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 
 app.post("/api/data", (req, res) => {
