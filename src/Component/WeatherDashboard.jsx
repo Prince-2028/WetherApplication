@@ -73,7 +73,7 @@ const WeatherDashboard = ({ voiceid }) => {
           </div>
           <div className="p-4 bg-gray-50 rounded-lg shadow-sm">
             <p className="text-gray-500 text-sm">UV Index</p>
-            <p className="text-xl font-bold">{response.pressure}</p>
+            <p className="text-xl font-bold">{response.uvindex}</p>
           </div>
         </div>
 
