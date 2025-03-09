@@ -10,7 +10,7 @@ const WeatherDashboard = ({ voiceid }) => {
 
   const handlesubmit = () => {
     axios
-      .post("https://wethercastnow.netlify.app", {
+      .post("https://wetherapplication-2.onrender.com/api/data", {
         cityName,
       })
       .then(function (response) {
