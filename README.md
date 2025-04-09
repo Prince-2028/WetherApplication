@@ -1,12 +1,37 @@
-# React + Vite
+# 🌦️ WeatherCastNow
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Live Link**: [https://wethercastnow.netlify.app/](https://wethercastnow.netlify.app/)
 
-Currently, two official plugins are available:
+WeatherCastNow is a sleek and modern weather application built using **React.js** on the frontend and **Express.js** for the backend API. It allows users to fetch real-time weather updates for any city around the world.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## Expanding the ESLint configuration
+## 🚀 Features
 
-If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- 🌍 Get current weather of any city worldwide
+- 🔍 Easy-to-use search functionality
+- ⚙️ Real-time data from weather API
+- 🖥️ Clean, responsive UI built with React
+- 🌐 Hosted on Netlify
+
+---
+
+## 🛠️ Technologies Used
+
+- **Frontend**: React.js, Tailwind CSS (if used)
+- **Backend**: Express.js, Node.js
+- **API**: OpenWeatherMap or any weather API
+- **Hosting**: Netlify (Frontend), Render/Heroku/Any other (Backend)
+
+---
+
+
+## 📦 Installation & Setup Instructions
+
+Follow the steps below to clone and run this project locally.
+
+### 1️⃣ Clone the Repository
+
+```bash
+git clone https://github.com/your-username/weathercastnow.git
+cd weathercastnow
