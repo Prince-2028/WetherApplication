@@ -22,11 +22,18 @@ app.post("/api/data", (req, res) => {
     url: `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${cityName}?unitGroup=metric&key=EJ6UBL2JEQGYB3AA4ENASN62J&contentType=json`,
   })
     .then(function (response) {
-      //
-      const adress = response.data.resolvedAddress;
-      console.log(adress);
+      const address = response.data.resolvedAddress;
+      console.log(address);
 
       const day1 = response.data.days[0];
+      // Prepare temperature graph data for next 7 days
+      const graphData = response.data.days.slice(0, 7).map((day) => ({
+        date: day.datetime,
+        temp: day.temp,
+        minTemp: day.tempmin,
+        maxTemp: day.tempmax,
+      }));
+
       const responseData = {
         date: day1.datetime,
         windspeed: day1.windspeed,
@@ -36,7 +43,8 @@ app.post("/api/data", (req, res) => {
         sunrise: day1.sunrise,
         humidity: day1.humidity,
         temp: day1.temp,
-        adress: response.data.resolvedAddress,
+        address: response.data.resolvedAddress,
+        graphData, // add graph data for frontend
       };
 
       res.status(200).json(responseData);
