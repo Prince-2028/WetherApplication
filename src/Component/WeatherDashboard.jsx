@@ -45,31 +45,35 @@ const WeatherDashboard = ({ voiceid }) => {
       {/* Left Section */}
       <div className="flex-1 bg-white/90 p-8 rounded-3xl shadow-2xl border border-blue-200">
         {/* Search Bar - Placed at the Top */}
-        <div className="flex items-center gap-4 flex-wrap mb-8">
-          <input
-            type="text"
-            placeholder="Enter city name..."
-            className="border-2 border-blue-300 focus:border-blue-500 rounded-xl px-4 py-2 text-base w-40 sm:w-56 md:w-72 lg:w-96 h-12 shadow-sm outline-none transition-all"
-            value={cityName}
-            onChange={(e) => setCityName(e.target.value)}
-          />
-          <FaMicrophone
-            className="w-7 h-7 text-blue-500 hover:text-blue-700 transition cursor-pointer"
-            onClick={voiceid}
-          />
-          <button
-            type="button"
-            className="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:from-blue-600 hover:to-purple-500 focus:ring-4 focus:outline-none focus:ring-blue-300 font-semibold rounded-xl text-base px-7 py-2 shadow-md transition-all duration-200"
-            onClick={handlesubmit}
-            disabled={loading}
-          >
-            Search
-          </button>
-          {loading && (
-            <div className="ml-2">
-              <span className="inline-block w-7 h-7 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></span>
+        <div className="mb-8">
+          <div className="relative flex flex-col sm:flex-row gap-2 sm:gap-4">
+            <div className="relative flex-1 min-w-0">
+              <input
+                type="text"
+                placeholder="Enter city name..."
+                className="border-2 border-blue-300 focus:border-blue-500 rounded-xl px-4 py-2 text-base w-full h-12 shadow-sm outline-none transition-all pr-12"
+                value={cityName}
+                onChange={(e) => setCityName(e.target.value)}
+              />
+              <FaMicrophone
+                className="absolute right-3 top-1/2 -translate-y-1/2 w-7 h-7 text-blue-500 hover:text-blue-700 transition cursor-pointer"
+                onClick={voiceid}
+              />
             </div>
-          )}
+            <button
+              type="button"
+              className="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:from-blue-600 hover:to-purple-500 focus:ring-4 focus:outline-none focus:ring-blue-300 font-semibold rounded-xl text-base px-7 py-2 shadow-md transition-all duration-200 w-full sm:w-auto"
+              onClick={handlesubmit}
+              disabled={loading}
+            >
+              Search
+            </button>
+            {loading && (
+              <div className="ml-2 flex items-center justify-center">
+                <span className="inline-block w-7 h-7 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></span>
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Header */}
