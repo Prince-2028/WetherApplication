@@ -25,7 +25,7 @@ const App = () => {
     <>
       {/* <button onClick={voiceADD}><FaMicrophone />
       </button> */}
-      <WeatherDashboard voiceid={voiceADD}/>
+      <WeatherDashboard voiceid={voiceADD} voiceCity={voiceCity}/>
     </>
     
   );

@@ -1,5 +1,5 @@
 import { FaMicrophone } from "react-icons/fa6";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import axios from "axios";
 import {
   LineChart,
@@ -14,12 +14,35 @@ import {
   Area,
 } from "recharts";
 
-const WeatherDashboard = ({ voiceid }) => {
+const WeatherDashboard = ({ voiceid, voiceCity }) => {
   const [cityName, setCityName] = useState("");
   const [response, setResponse] = useState(null);
   const [loading, setLoading] = useState(false); // loader state
-  console.log(response);
-  console.log(cityName);
+  
+  console.log("ciyty",voiceCity);
+
+  // Auto-search when voiceCity changes
+  useEffect(() => {
+    if (voiceCity && voiceCity.trim() !== "") {
+      setCityName(voiceCity);
+      setLoading(true);
+      axios
+        .post("https://wetherapplication-2.onrender.com/api/data", {
+          cityName: voiceCity,
+        })
+        .then(function (res) {
+          setCityName("");
+          setResponse(res.data);
+          setLoading(false);
+        })
+        .catch(function (error) {
+          setLoading(false);
+          setCityName("");
+          alert("Please enter a valid location");
+        });
+    }
+    // eslint-disable-next-line
+  }, [voiceCity]);
 
   const handlesubmit = () => {
     setLoading(true); // start loader
