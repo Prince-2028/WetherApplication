@@ -22,7 +22,7 @@ const WeatherDashboard = ({ voiceid, voiceCity }) => {
   const [suggestLoading, setSuggestLoading] = useState(false); // suggestion loader
   const debounceRef = useRef(null);
 
-  // Fetch city suggestions from backend API
+  // Fetch city suggestions directly from GeoDB API (frontend only)
   const fetchCitySuggestions = async (query) => {
     if (!query) {
       setSuggestions([]);
@@ -30,11 +30,24 @@ const WeatherDashboard = ({ voiceid, voiceCity }) => {
     }
     setSuggestLoading(true);
     try {
-      const res = await axios.post(
-        "https://wetherapplication-2.onrender.com/api/cities",
-        { query }
+      const geoRes = await axios.get(
+        "https://wft-geo-db.p.rapidapi.com/v1/geo/cities",
+        {
+          params: { namePrefix: query, limit: 7 },
+          headers: {
+            "x-rapidapi-key":
+              "66785028fcmshafd696716d75f57p1dcd49jsn79574034b527",
+            "x-rapidapi-host": "wft-geo-db.p.rapidapi.com",
+          },
+        }
       );
-      setSuggestions(res.data.suggestions || []);
+      const suggestions = geoRes.data.data.map(
+        (city) =>
+          `${city.city}${city.region ? ", " + city.region : ""}${
+            city.country ? ", " + city.country : ""
+          }`
+      );
+      setSuggestions(suggestions);
     } catch (err) {
       setSuggestions([]);
     }
