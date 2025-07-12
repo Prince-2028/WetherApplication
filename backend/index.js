@@ -62,6 +62,25 @@ app.post("/api/data", (req, res) => {
     });
 });
 
+app.post("/api/cities", async (req, res) => {
+  const { query } = req.body;
+  try {
+    const geoRes = await axios.get(`${process.env.CITIES_API_URL}`, {
+      params: { namePrefix: query, limit: 7 },
+      headers: {
+        "x-rapidapi-key": process.env.CITIES_API_KEY,
+        "x-rapidapi-host": process.env.CITIES_API_HOST,
+      },
+    });
+    const suggestions = geoRes.data.data.map(
+      (city) => `${city.city}${city.region ? ", " + city.region : ""}${city.country ? ", " + city.country : ""}`
+    );
+    res.json({ suggestions });
+  } catch (err) {
+    res.json({ suggestions: [] });
+  }
+});
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
