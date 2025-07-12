@@ -1,5 +1,5 @@
 import { FaMicrophone } from "react-icons/fa6";
-import { useState,useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import {
   LineChart,
@@ -18,8 +18,58 @@ const WeatherDashboard = ({ voiceid, voiceCity }) => {
   const [cityName, setCityName] = useState("");
   const [response, setResponse] = useState(null);
   const [loading, setLoading] = useState(false); // loader state
-  
-  console.log("ciyty",voiceCity);
+  const [suggestions, setSuggestions] = useState([]); // city suggestions
+  const [suggestLoading, setSuggestLoading] = useState(false); // suggestion loader
+  const debounceRef = useRef(null);
+
+  // Fetch city suggestions from GeoDB Cities API
+  const fetchCitySuggestions = async (query) => {
+    if (!query) {
+      setSuggestions([]);
+      return;
+    }
+    setSuggestLoading(true);
+    try {
+      const res = await axios.get(
+        `https://wft-geo-db.p.rapidapi.com/v1/geo/cities`,
+        {
+          params: { namePrefix: query, limit: 7 },
+          headers: {
+            "x-rapidapi-key":
+              "66785028fcmshafd696716d75f57p1dcd49jsn79574034b527",
+            "x-rapidapi-host": "wft-geo-db.p.rapidapi.com",
+          },
+        }
+      );
+      setSuggestions(
+        res.data.data.map(
+          (city) =>
+            `${city.city}${city.region ? ", " + city.region : ""}${
+              city.country ? ", " + city.country : ""
+            }`
+        )
+      );
+    } catch (err) {
+      setSuggestions([]);
+    }
+    setSuggestLoading(false);
+  };
+
+  // Debounced input change handler
+  const handleInputChange = (e) => {
+    const value = e.target.value;
+    setCityName(value);
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(() => {
+      fetchCitySuggestions(value);
+    }, 400);
+  };
+
+  // Suggestion click handler
+  const handleSuggestionClick = (city) => {
+    setCityName(city);
+    setSuggestions([]);
+  };
 
   // Auto-search when voiceCity changes
   useEffect(() => {
@@ -76,12 +126,32 @@ const WeatherDashboard = ({ voiceid, voiceCity }) => {
                 placeholder="Enter city name..."
                 className="border-2 border-blue-300 focus:border-blue-500 rounded-xl px-4 py-2 text-base w-full h-12 shadow-sm outline-none transition-all pr-12"
                 value={cityName}
-                onChange={(e) => setCityName(e.target.value)}
+                onChange={handleInputChange}
+                autoComplete="off"
               />
               <FaMicrophone
                 className="absolute right-3 top-1/2 -translate-y-1/2 w-7 h-7 text-blue-500 hover:text-blue-700 transition cursor-pointer"
                 onClick={voiceid}
               />
+              {/* Suggestions Dropdown */}
+              {suggestions.length > 0 && (
+                <ul className="absolute z-10 bg-white border border-blue-300 rounded-xl mt-1 w-full shadow-lg max-h-48 overflow-y-auto">
+                  {suggestions.map((city, idx) => (
+                    <li
+                      key={city + idx}
+                      className="px-4 py-2 cursor-pointer hover:bg-blue-100"
+                      onClick={() => handleSuggestionClick(city)}
+                    >
+                      {city}
+                    </li>
+                  ))}
+                </ul>
+              )}
+              {suggestLoading && (
+                <div className="absolute right-12 top-1/2 -translate-y-1/2">
+                  <span className="inline-block w-5 h-5 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></span>
+                </div>
+              )}
             </div>
             <button
               type="button"
