@@ -1,8 +1,11 @@
 import express from "express";
 import axios from "axios";
 import cors from "cors";
+import dotenv from "dotenv";
+dotenv.config();
+
 const app = express();
-const port = 5000;
+const port = process.env.PORT || 5000;
 
 const corsOptions = {
   origin:  ["https://wethercastnow.netlify.app", "http://localhost:5173"],
@@ -19,7 +22,7 @@ app.post("/api/data", (req, res) => {
 
   axios({
     method: "get",
-    url: `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${cityName}?unitGroup=metric&key=EJ6UBL2JEQGYB3AA4ENASN62J&contentType=json`,
+    url: `${process.env.WEATHER_API_URL}/${cityName}?unitGroup=metric&key=${process.env.WEATHER_API_KEY}&contentType=json`,
   })
     .then(function (response) {
       const address = response.data.resolvedAddress;
